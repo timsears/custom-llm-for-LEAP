@@ -25,6 +25,11 @@ else:
 
 groq_key = os.environ.get('GROQ_API_KEY')
 
+@app.route('/', methods=['GET'])
+def health_check():
+    return 'Server is up and running!', 200
+
+
 @app.route('/v1/chat/completions', methods=['POST'])
 def chat_completions():
     data = request.get_json()
