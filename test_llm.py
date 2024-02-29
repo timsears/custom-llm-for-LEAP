@@ -1,9 +1,25 @@
+'''
+`python test_llm.py --dev` or `--prod` 
+'''
+
 import requests
 import json
+import argparse
 
-# Replace this URL with your Flask application's URL
-DOMAIN_URL = "http://127.0.0.1:5000"
-#DOMAIN_URL = "https://custom-llm-for-leap.vercel.app"
+# Define command line argument parsing
+parser = argparse.ArgumentParser(description='Test LLM API.')
+parser.add_argument('--dev', action='store_true', help='Use local dev environment URL.')
+parser.add_argument('--prod', action='store_true', help='Use production environment URL.')
+
+args = parser.parse_args()
+
+# Set the domain URL based on the command line argument
+if args.dev:
+    DOMAIN_URL = "http://127.0.0.1:5000"
+elif args.prod:
+    DOMAIN_URL = "https://custom-llm-for-leap.vercel.app"
+else:
+    raise ValueError("Please specify either --test or --prod option.")
 
 def test_llm_single_message():
     print("Test 1: Single Message Translation")
