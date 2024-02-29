@@ -2,8 +2,8 @@ import requests
 import json
 
 # Replace this URL with your Flask application's URL
-#DOMAIN_URL = "http://127.0.0.1:5000"
-DOMAIN_URL = "https://custom-llm-for-leap.vercel.app"
+DOMAIN_URL = "http://127.0.0.1:5000"
+#DOMAIN_URL = "https://custom-llm-for-leap.vercel.app"
 
 def test_llm_single_message():
     print("Test 1: Single Message Translation")
