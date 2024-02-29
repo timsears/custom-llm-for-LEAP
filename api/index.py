@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify
 import os
-import openai
+from openai import OpenAI
 import json
 import base64
 from google.cloud import translate_v2 as translate
 from google.oauth2 import service_account
+from groq import Groq
 
 app = Flask(__name__)
 
@@ -22,12 +23,20 @@ elif 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ:
 else:
     raise Exception('Google Cloud credentials missing.')
 
-openai.api_key = os.getenv('OPENAI_API_KEY')
+groq_key = os.environ.get('GROQ_API_KEY')
 
 @app.route('/v1/chat/completions', methods=['POST'])
 def chat_completions():
     data = request.get_json()
-    model = data.get('model', 'gpt-3.5-turbo')
+    model = data.get('model', 'gpt-3.5-turbo') #
+
+    if model == 'gpt-3.5-turbo':
+        client = OpenAI()
+    elif model == 'mixtral-8x7b-32768':
+        client = OpenAI( api_key=groq_key, base_url='https://api.groq.com/openai/v1');
+    else:
+       raise Exception ("chat_completions: Unsupported model: ", model)
+
     messages = data.get('messages', [])
 
     if not messages:
@@ -41,13 +50,13 @@ def chat_completions():
                 message['content'] = translate_client.translate(message['content'], target_language='en', model='nmt')['translatedText']
 
     # Call OpenAI's completion API with the translated conversation
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model=model,
         messages=messages
     )
 
     # Assuming response should be translated back to the original language if needed
-    completion_text = response.choices[0].message['content']
+    completion_text = (response.choices)[0].message.content
     if detected_lang != 'en':
         completion_translated = translate_client.translate(completion_text, target_language=detected_lang, format_='text', model='nmt')['translatedText']
     else:
@@ -55,8 +64,8 @@ def chat_completions():
 
     # Construct and return the response object
     response_data = {
-        'id': response['id'],
-        'model': response['model'],
+        'id': response.id,
+        'model': model,
         'choices': [{
             'message': {'role': 'assistant', 'content': completion_translated},
         }]
