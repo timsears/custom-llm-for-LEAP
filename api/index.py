@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 import os
 import openai
+import json
+import base64
 from google.cloud import translate_v2 as translate
 from google.oauth2 import service_account
 
