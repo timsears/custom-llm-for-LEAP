@@ -6,31 +6,21 @@ from google.oauth2 import service_account
 
 app = Flask(__name__)
 
-def get_credentials():
-    # Check if running on Vercel or locally
-    if 'GOOGLE_APPLICATION_CREDENTIALS_BASE64' in os.environ:
-        # Vercel deployment: decode credentials from Base64
-        credentials_base64 = os.environ['GOOGLE_APPLICATION_CREDENTIALS_BASE64']
-        credentials_json = base64.b64decode(credentials_base64).decode('utf-8')
-        credentials = service_account.Credentials.from_service_account_info(json.loads(credentials_json))
-    elif 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ:
-        # Local development: load credentials from JSON file
-        credentials_path = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
-        credentials = service_account.Credentials.from_service_account_file(credentials_path)
-    else:
-        raise Exception('Google Cloud credentials were not found.')
-
-    return credentials
-
-credentials = get_credentials()
-
+# Check if running on Vercel or locally
 # Initialize the Translate client with the obtained credentials
-translate_client = translate.Client(credentials=credentials)
-
+if 'GOOGLE_APPLICATION_CREDENTIALS_BASE64' in os.environ:
+    # Vercel deployment: decode credentials from Base64
+    credentials_base64 = os.environ['GOOGLE_APPLICATION_CREDENTIALS_BASE64']
+    credentials_json = base64.b64decode(credentials_base64).decode('utf-8')
+    credentials = service_account.Credentials.from_service_account_info(json.loads(credentials_json))
+    translate_client = translate.Client(credentials=credentials)
+elif 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ:
+    # Local development: load credentials from JSON file
+    translate_client = translate.Client()
+else:
+    raise Exception('Google Cloud credentials missing.')
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
-# Verify that the environment variable is set
-
 
 @app.route('/v1/chat/completions', methods=['POST'])
 def chat_completions():
