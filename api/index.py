@@ -97,4 +97,4 @@ def chat_completions():
     }
 
     print (llm_response)
-    return jsonify(llm_response), 200
+    return jsonify(llm_response), 201
