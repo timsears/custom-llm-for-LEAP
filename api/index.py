@@ -58,7 +58,11 @@ def chat_completions():
             print("translated content: " + message['content'])
             print("deteced_lang: " + detected_lang)
             if detected_lang != 'en':
-                x = translate_client.translate(message['content'], target_language='en', model='nmt')['translatedText']
+                x = translate_client.translate(
+                    message['content'],
+                    source_language = 'ar',
+                    target_language='en',
+                    model='nmt')['translatedText']
                 message['content'] = x
                 print("translated content: " + x)
 
