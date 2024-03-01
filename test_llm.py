@@ -29,7 +29,7 @@ test_model = groq_model
 
 def test_llm_single_message():
     print("Test 1: Single Message Translation")
-    endpoint = f"{DOMAIN_URL}/v1/chat/completions"
+    endpoint = f"{DOMAIN_URL}/chat/completions"
     headers = {"Content-Type": "application/json"}
     
     # Single message in Arabic
@@ -55,7 +55,7 @@ def test_llm_single_message():
 
 def test_llm_conversation():
     print("\nTest 2: Conversation Translation")
-    endpoint = f"{DOMAIN_URL}/v1/chat/completions"
+    endpoint = f"{DOMAIN_URL}/chat/completions"
     headers = {"Content-Type": "application/json"}
     
     # A simulated conversation with multiple exchanges
