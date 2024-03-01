@@ -6,6 +6,7 @@ import base64
 from google.cloud import translate_v2 as translate
 from google.oauth2 import service_account
 from groq import Groq
+import time
 
 app = Flask(__name__)
 
@@ -77,12 +78,18 @@ def chat_completions():
         completion_translated = completion_text
 
     # Construct and return the response object
-    response_data = {
-        'id': response.id,
-        'model': model,
-        'choices': [{
-            'message': {'role': 'assistant', 'content': completion_translated},
+    llm_response = {
+        "id": response.id,
+        "object": "chat.completion",
+        "created": int(time.time()),
+        "model": model,
+        "system_fingerprint": None,
+        "choices": [{
+            "index": 0,
+            "delta": {"content": completion_translated},
+            "logprobs": None,
+            "finish_reason": "stop"
         }]
     }
 
-    return jsonify(response_data)
+    return jsonify(llm_response)
