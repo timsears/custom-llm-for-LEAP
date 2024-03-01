@@ -39,7 +39,7 @@ def chat_completions():
     if model == 'gpt-3.5-turbo':
         client = OpenAI()
     elif model == 'mixtral-8x7b-32768':
-        client = OpenAI( api_key=groq_key, base_url='https://api.groq.com/openai/v1');
+        client = OpenAI( api_key=groq_key, base_url='https://api.groq.com/openai/v1')
     else:
        return "chat_completions: Unsupported model: " + model , 400
        #raise Exception ("chat_completions: Unsupported model: ", model)

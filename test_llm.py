@@ -5,6 +5,7 @@
 import requests
 import json
 import argparse
+from openai import OpenAI
 
 # Define command line argument parsing
 parser = argparse.ArgumentParser(description='Test LLM API.')
@@ -26,6 +27,20 @@ openai_model = "gpt-3.5-turbo"
 ### CHANGE AS NEEDED 
 test_model = groq_model
 #test_model = openai_model
+
+def test_api_request():
+    print("Test 3: Custom LLM using OpenAI library")
+    client = OpenAI( api_key = "cannot_be_empty", base_url = DOMAIN_URL)
+    completion = client.chat.completions.create(
+        model = groq_model,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": "ما هو الطقس اليوم؟"},
+            {"role": "assistant", "content": "Let me check that for you."},
+            {"role": "user", "content": "شكرا لك"}
+        ]
+    )
+    print(completion)
 
 def test_llm_single_message():
     print("Test 1: Single Message Translation")
@@ -85,3 +100,4 @@ def test_llm_conversation():
 if __name__ == "__main__":
     test_llm_single_message()
     test_llm_conversation()
+    test_api_request()
