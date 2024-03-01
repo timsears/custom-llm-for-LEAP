@@ -54,7 +54,7 @@ def chat_completions():
     # Translate all user messages to English
     for message in messages:
         if message['role'] == 'user':
-            detected_lang = translate_client.detect_language(message['content'])['language']
+            detected_lang = 'ar' # translate_client.detect_language(message['content'])['language']
             print("translated content: " + message['content'])
             print("deteced_lang: " + detected_lang)
             if detected_lang != 'en':
