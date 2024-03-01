@@ -34,14 +34,16 @@ def health_check():
 def chat_completions():
     data = request.get_json()
     model = data.get('model', 'gpt-3.5-turbo') #
-    app.logger.info("model: " + model)
 
     if model == 'gpt-3.5-turbo':
         client = OpenAI()
     elif model == 'mixtral-8x7b-32768':
         client = OpenAI( api_key=groq_key, base_url='https://api.groq.com/openai/v1');
     else:
-       raise Exception ("chat_completions: Unsupported model: ", model)
+       return "chat_completions: Unsupported model: " + model , 400
+       #raise Exception ("chat_completions: Unsupported model: ", model)
+
+    print("model: " + model)
 
     messages = data.get('messages', [])
 
@@ -52,12 +54,12 @@ def chat_completions():
     for message in messages:
         if message['role'] == 'user':
             detected_lang = translate_client.detect_language(message['content'])['language']
-            app.logger.info("translated content: " + message['content'])
-            app.logger.info("deteced_lang: " + detected_lang)
+            print("translated content: " + message['content'])
+            print("deteced_lang: " + detected_lang)
             if detected_lang != 'en':
                 x = translate_client.translate(message['content'], target_language='en', model='nmt')['translatedText']
                 message['content'] = x
-                app.logger.info("translated content: " + x)
+                print("translated content: " + x)
 
     # Call OpenAI's completion API with the translated conversation
     response = client.chat.completions.create(
@@ -67,7 +69,7 @@ def chat_completions():
 
     # Assuming response should be translated back to the original language if needed
     completion_text = (response.choices)[0].message.content
-    app.logger.info("llm response: " + completion_text)
+    print("llm response: " + completion_text)
 
     if detected_lang != 'en':
         completion_translated = translate_client.translate(completion_text, target_language=detected_lang, format_='text', model='nmt')['translatedText']
