@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 import os
 from openai import OpenAI
 import json
@@ -97,4 +97,11 @@ def chat_completions():
     }
 
     print (llm_response)
-    return jsonify(llm_response), 201
+
+    # Convert message into data packet.
+    def generate(message):
+        json_data = json.dumps(message)
+        yield f"data: {json_data}\n\n"
+
+    # Stream response back.
+    return Response(generate(llm_response), content_type='text/event-stream')
