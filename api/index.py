@@ -7,8 +7,10 @@ from google.cloud import translate_v2 as translate
 from google.oauth2 import service_account
 from groq import Groq
 import time
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # Check if running on Vercel or locally
 # Initialize the Translate client with the obtained credentials
