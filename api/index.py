@@ -30,10 +30,11 @@ def health_check():
     return 'Server is up and running!', 200
 
 
-@app.route('/v1/chat/completions', methods=['POST'])
+@app.route('/chat/completions', methods=['POST'])
 def chat_completions():
     data = request.get_json()
     model = data.get('model', 'gpt-3.5-turbo') #
+    app.logger.info("model: " + model)
 
     if model == 'gpt-3.5-turbo':
         client = OpenAI()
@@ -51,8 +52,12 @@ def chat_completions():
     for message in messages:
         if message['role'] == 'user':
             detected_lang = translate_client.detect_language(message['content'])['language']
+            app.logger.info("translated content: " + message['content'])
+            app.logger.info("deteced_lang: " + detected_lang)
             if detected_lang != 'en':
-                message['content'] = translate_client.translate(message['content'], target_language='en', model='nmt')['translatedText']
+                x = translate_client.translate(message['content'], target_language='en', model='nmt')['translatedText']
+                message['content'] = x
+                app.logger.info("translated content: " + x)
 
     # Call OpenAI's completion API with the translated conversation
     response = client.chat.completions.create(
@@ -62,6 +67,8 @@ def chat_completions():
 
     # Assuming response should be translated back to the original language if needed
     completion_text = (response.choices)[0].message.content
+    app.logger.info("llm response: " + completion_text)
+
     if detected_lang != 'en':
         completion_translated = translate_client.translate(completion_text, target_language=detected_lang, format_='text', model='nmt')['translatedText']
     else:

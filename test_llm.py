@@ -24,8 +24,8 @@ else:
 groq_model = "mixtral-8x7b-32768"
 openai_model = "gpt-3.5-turbo"
 ### CHANGE AS NEEDED 
-#test_model = groq_model
-test_model = openai_model
+test_model = groq_model
+#test_model = openai_model
 
 def test_llm_single_message():
     print("Test 1: Single Message Translation")
