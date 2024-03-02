@@ -38,7 +38,8 @@ def test_api_request():
             {"role": "user", "content": "ما هو الطقس اليوم؟"},
             {"role": "assistant", "content": "Let me check that for you."},
             {"role": "user", "content": "شكرا لك"}
-        ]
+        ],
+        streaming = True
     )
     print(completion)
 
@@ -98,6 +99,6 @@ def test_llm_conversation():
         print(f"Failed to get response: {response.status_code}")
 
 if __name__ == "__main__":
-    test_llm_single_message()
-    test_llm_conversation()
+#    test_llm_single_message()
+#    test_llm_conversation()
     test_api_request()
