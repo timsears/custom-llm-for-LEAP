@@ -71,7 +71,7 @@ def chat_completions():
     # print what the llm will be responding to
     ms = [m for m in messages if m['role'] == 'user']
     if ms: print ("last user input", ms[-1]['content'])
-    #print ("\nall messages:", ms)
+    print ("\nall messages:", ms)
 
     # Call OpenAI's completion API with the translated conversation
     response = client.chat.completions.create(
