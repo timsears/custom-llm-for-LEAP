@@ -70,15 +70,16 @@ def chat_completions():
 
     # print what the llm will be responding to
     ms = [m for m in messages if m['role'] == 'user' or m['role'] == 'assistant']
-    if ms: print ("last user input", ms[-1]['content'])
-    print ("\nall chat messages:\n")
+    print ("\nall chat messages:")
     for m in ms:
         print(m)
+    if ms: print ("last user input", ms[-1]['content'])
 
     # Call OpenAI's completion API with the translated conversation
     response = client.chat.completions.create(
         model=model,
         messages=messages
+        max_tokens = 250
     )
     completion_text = (response.choices)[0].message.content
     #print("\nraw llm response:\n", response)
