@@ -69,7 +69,7 @@ def chat_completions():
         #         print("translated content: " + x)
 
     # print what the llm will be responding to
-    ms = [m for m in messages if m['role'] == 'user' || or m['role'] == 'assistant']
+    ms = [m for m in messages if m['role'] == 'user' || m['role'] == 'assistant']
     if ms: print ("last user input", ms[-1]['content'])
     print ("\nall chat messages:\n", ms )
 
