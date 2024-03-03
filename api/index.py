@@ -56,7 +56,7 @@ def chat_completions():
     # DONT TRANSLATE INCOMING
     # print("\nincoming messages:\n")
     for message in messages:
-        print("... " + message['content'])
+        # print("... " + message['content'])
         # if message['role'] == 'user':
         #     detected_lang = translate_client.detect_language(message['content'])['language']
         #     if detected_lang != 'en':
