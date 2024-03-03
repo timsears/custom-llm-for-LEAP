@@ -46,7 +46,7 @@ def chat_completions():
        return "chat_completions: Unsupported model: " + model , 400
        #raise Exception ("chat_completions: Unsupported model: ", model)
 
-    print("\nmodel: " + model)
+    print("model: " + model)
 
     messages = data.get('messages', [])
 
@@ -70,7 +70,7 @@ def chat_completions():
 
     # print what the llm will be responding to
     ms = [m for m in messages if m['role'] == 'user']
-    if ms: print ("\nlast user input", ms[-1])
+    if ms: print ("last user input", ms[-1]['content'])
     #print ("\nall messages:", ms)
 
     # Call OpenAI's completion API with the translated conversation
@@ -80,7 +80,7 @@ def chat_completions():
     )
     completion_text = (response.choices)[0].message.content
     #print("\nraw llm response:\n", response)
-    print("\nllm response: " + completion_text)
+    print("llm response: " + completion_text)
 
     # if detected_lang != 'en':
     #     completion_translated = translate_client.translate(completion_text, target_language='ar', format_='text', model='nmt')['translatedText']
@@ -90,7 +90,7 @@ def chat_completions():
     # DO Translate response to Arabic
     target_language = 'ar'
     completion_translated = translate_client.translate(completion_text, target_language='ar', format_='text', model='nmt')['translatedText']
-    print("\ntranslated llm response: ", completion_translated)
+    print("translated llm response: ", completion_translated)
 
     # Construct and return the response object
     llm_response = {
