@@ -54,7 +54,7 @@ def chat_completions():
         return jsonify({'error': 'No messages provided'}), 400
 
     # DONT TRANSLATE INCOMING
-    print("\nincoming messages:\n")
+    # print("\nincoming messages:\n")
     for message in messages:
         print("... " + message['content'])
         # if message['role'] == 'user':
@@ -75,7 +75,8 @@ def chat_completions():
         messages=messages
     )
 
-    print("\nraw llm response:\n", response)
+    print("\nlast input message: ", messages[-1]['content'])
+    #print("\nraw llm response:\n", response)
     completion_text = (response.choices)[0].message.content
     print("\nllm response: " + completion_text)
 
