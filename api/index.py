@@ -68,6 +68,9 @@ def chat_completions():
         #         message['content'] = x
         #         print("translated content: " + x)
 
+    print("\nlast assistant message:\n")
+    ms = [m for m in messages if m['content']== 'user']
+    if ms : print(ms[-1])
 
     # Call OpenAI's completion API with the translated conversation
     response = client.chat.completions.create(
@@ -75,7 +78,6 @@ def chat_completions():
         messages=messages
     )
 
-    print("\nlast input message: ", messages[-1]['content'])
     #print("\nraw llm response:\n", response)
     completion_text = (response.choices)[0].message.content
     print("\nllm response: " + completion_text)
