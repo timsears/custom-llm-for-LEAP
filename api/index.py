@@ -51,7 +51,7 @@ def chat_completions():
     messages = data.get('messages', [])
 
     if not messages:
-        return jsonify({'error': 'No qessages provided'}), 400
+        return jsonify({'error': 'No messages provided'}), 400
 
     # Translate all user messages to English
     for message in messages:
@@ -78,12 +78,16 @@ def chat_completions():
     completion_text = (response.choices)[0].message.content
     print("llm response: " + completion_text)
 
-    if detected_lang != 'en':
-        completion_translated = translate_client.translate(completion_text, target_language='ar', format_='text', model='nmt')['translatedText']
-    else:
-        completion_translated = completion_text
+    # if detected_lang != 'en':
+    #     completion_translated = translate_client.translate(completion_text, target_language='ar', format_='text', model='nmt')['translatedText']
+    # else:
+    #     completion_translated = completion_text
+
+    target_language = 'ar'
+    completion_translated = translate_client.translate(completion_text, target_language='ar', format_='text', model='nmt')['translatedText']
 
     # Construct and return the response object
+
     llm_response = {
         "id": response.id,
         "object": "chat.completion",
