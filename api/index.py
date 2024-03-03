@@ -88,7 +88,7 @@ def chat_completions():
     # DO Translate response to Arabic
     target_language = 'ar'
     completion_translated = translate_client.translate(completion_text, target_language='ar', format_='text', model='nmt')['translatedText']
-    print("\n: translated response: ", completion_translated)
+    print("\ntranslated llm response: ", completion_translated)
 
     # Construct and return the response object
     llm_response = {
