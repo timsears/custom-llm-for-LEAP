@@ -105,7 +105,7 @@ def chat_completions():
         }]
     }
 
-    print ("\n",llm_response)
+    #print ("\n",llm_response)
 
     # Convert message into data packet.
     def generate(message):
