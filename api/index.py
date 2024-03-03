@@ -78,7 +78,7 @@ def chat_completions():
     # Call OpenAI's completion API with the translated conversation
     response = client.chat.completions.create(
         model=model,
-        messages=messages
+        messages=messages,
         max_tokens = 250
     )
     completion_text = (response.choices)[0].message.content
