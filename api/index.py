@@ -74,9 +74,9 @@ def chat_completions():
     for m in ms:
         print(m)
 
-    #remove first assistant message
-    messages = messages[1:] + messages[2:]
-    print ("dropping:", messages[2])
+    # #remove first assistant message
+    # messages = messages[1:] + messages[2:]
+    # print ("dropping:", messages[2])
 
     print ("llm last input:", messages[-1])
 
